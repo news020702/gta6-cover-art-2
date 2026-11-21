@@ -1,26 +1,30 @@
 // main.ts — the entrypoint of the Neon Harbor cover-art entry.
 //
-// Copies the static app and the screenshots into /output and writes the
-// dossier there with make.fun's own buildDossier. Runs with plain node,
-// no build step and no install:
+// Copies the static app and the screenshots into the output directory and
+// writes the dossier there with make.fun's own buildDossier. Runs with plain
+// node, no build step and no install:
 //
 //   node main.ts
 //
 // The scorer runs this same file on what is handed in, so it must read
-// only the repository and write only /output.
+// only the repository and write only the output directory. The output
+// directory is MAKEFUN_OUTPUT_DIR when set, otherwise /output. It never
+// removes the output directory itself: in the grader the filesystem is
+// read-only except /output and /tmp, so removing /output (which needs write
+// permission on its parent, /) throws and the program exits 1.
 
-import { cpSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDossier } from './vendor/makefun-app.ts';
 
 const repo = dirname(fileURLToPath(import.meta.url));
-const out = '/output';
+const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 
-rmSync(out, { recursive: true, force: true });
 mkdirSync(out, { recursive: true });
 cpSync(join(repo, 'app'), join(out, 'app'), { recursive: true });
-cpSync(join(repo, 'screenshots'), join(out, 'screenshots'), { recursive: true });
+mkdirSync(join(out, 'screenshots'), { recursive: true });
+if (existsSync(join(repo, 'screenshots'))) cpSync(join(repo, 'screenshots'), join(out, 'screenshots'), { recursive: true });
 
 const dossier = buildDossier(out, {
   text_max_bytes: 163840,
