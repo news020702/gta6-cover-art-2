@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neon Harbor — Midnight Cover Studio</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="brand-mark">NH</span><span class="brand-name">NEON HARBOR</span><span class="brand-sub">Midnight Cover Studio</span></div>
+  <div class="top-actions">
+    <label class="size-label">Size
+      <select id="sizeSelect">
+        <option value="1080x1080">1080 &times; 1080 &middot; square</option>
+        <option value="1080x1350">1080 &times; 1350 &middot; portrait</option>
+        <option value="1920x1080" selected>1920 &times; 1080 &middot; wide</option>
+      </select>
+    </label>
+    <button id="exportBtn" class="primary">Export PNG</button>
+  </div>
+</header>
+<main class="workspace">
+  <aside class="controls">
+    <section>
+      <h2>1 &middot; Photo</h2>
+      <p class="hint">Pick a sample, or add your own photo. Click a panel in the preview to select it, then click a photo to fill it.</p>
+      <div class="thumbs" id="photoThumbs"></div>
+      <label class="upload">Add your own photo
+        <input type="file" id="fileInput" accept="image/*" multiple hidden>
+      </label>
+      <button id="fillAllBtn" class="ghost">Fill all panels with this photo</button>
+    </section>
+    <section>
+      <h2>2 &middot; Layout</h2>
+      <div class="choices" id="layoutChoices"></div>
+    </section>
+    <section>
+      <h2>3 &middot; Colour grade</h2>
+      <div class="choices swatches" id="gradeChoices"></div>
+      <p class="grade-name" id="gradeName"></p>
+    </section>
+    <section>
+      <h2>4 &middot; Words</h2>
+      <label class="field">Title
+        <input id="titleInput" value="NEON HARBOR" maxlength="24" spellcheck="false">
+      </label>
+      <label class="field">Tagline
+        <input id="taglineInput" value="MIDNIGHT. NEON. NO BRAKES." maxlength="48" spellcheck="false">
+      </label>
+    </section>
+    <section>
+      <h2>5 &middot; Frame the shot</h2>
+      <label class="field">Zoom &mdash; selected panel
+        <input type="range" id="zoomRange" min="1" max="3" step="0.05" value="1.15">
+      </label>
+      <p class="hint">Drag on the preview to pan the selected panel.</p>
+      <button id="resetPanelBtn" class="ghost">Reset selected panel</button>
+    </section>
+  </aside>
+  <section class="stage">
+    <div class="preview-wrap"><canvas id="poster"></canvas></div>
+    <p class="stage-note" id="stageNote"></p>
+  </section>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>
